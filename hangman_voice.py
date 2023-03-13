@@ -1,3 +1,28 @@
+"""
+File: hangman_voice.py
+Name: Jane
+-----------------------------
+This program is an extension version of the hangman problem in one of my coding assignments,
+which originally requires input and output on console and string manipulation only.
+Also, this program is devoted to my sister, Alicia, and her sons, Ian and Josh,
+who would really need this program.
+
+The main changes made in this program are:
+- The answer and the number of guesses allowed are entered on console by user
+- Current game status outputted by both console text and text-to-speech
+- Input user's guesses by voice recognition.
+- Content of output is adjusted due to user requirements
+- Turn the string of the guessed word into a list, for easier manipulation
+  (I just learned the technique in JavaScript last week.)
+
+The reason for choosing such input and output interfaces:
+It's because we don't want kids to stare at monitors all day.
+When using this program, kids only need to listen to the program and write down
+their guesses and draw their own hangman on paper,
+while the output on console is only for adults to check what is going on.
+"""
+
+
 import speech_recognition as sr
 from gtts import gTTS
 import os
@@ -42,7 +67,7 @@ def receive_guess():
     """
     guess = 'error'
     while guess == 'error':
-        guess = get_voice_input()
+        guess = get_voice_input()  # keep invoking get_voice_input() until a guess is returned
     print(f'Your guess: {guess}')
     speak_output(f'Your guess is the letter "{guess}"')
     return guess
@@ -50,7 +75,8 @@ def receive_guess():
 
 def main():
     """
-    This program is a game of hangman, letting user enter desired answer and number of guesses allowed on console,
+    This program is a game of hangman, letting user enter desired answer
+    and number of guesses allowed on console,
     outputting current game status by both console text and text-to-speech,
     and receiving user's guesses by voice recognition.
     """
@@ -76,6 +102,13 @@ def main():
     speak_output(f'The word has {ans_len} letters. You have {life} wrong guesses left.')
 
     # The game
+    """
+    When playing the hangman game, there are 4 types of situations:
+    - User guessed the correct letter, and there are still letters to guess
+    - User guessed the correct letter, and all the letters of the word are found out (end game)
+    - User guessed the wrong letter, and there are still letters to guess
+    - User guessed the wrong letter, and no lives left (end game)
+    """
     while life > 0:
         input_ch = receive_guess()  # Get the letter guessed by user
 
@@ -89,17 +122,23 @@ def main():
 
             # Already got all the letters right
             if ''.join(bars) == answer:
+                # Console output
                 print(f'You win! The word is: {"".join(bars)}')
+
+                # Voice output
                 speak_output(f'You win! The word is {"".join(bars)}')
 
+                # End game
                 break
 
             # Still letter(s) to guess
             else:
+                # Console output
                 print('You are correct!\n'
                       f'The word looks like {" ".join(bars)}\n'
                       f'You have {life} wrong guesses left.\n')
 
+                # Voice output
                 speak_output(f'You are correct! The letter "{input_ch}" is the')
                 for i in range(len(correct_letter_indices)):
                     if i == 0:
@@ -115,24 +154,29 @@ def main():
 
             # Already hung
             if life == 0:
+                # Console output
                 print('You are completely hung : (\n'
                       'Let me give you one last chance!\n'
                       'Please spell the word on your paper, and ask Alicia to check it.')
 
+                # Voice output
                 speak_output('You are completely hung....'
                              'Let me give you one last chance!'
                              'Please spell the word on your paper, and ask Alicia to check it.')
                 for i in range(3):
                     speak_output(answer)
 
+                # End game
                 break
 
             # Still alive
             else:
+                # Console output
                 print(f'There is no {input_ch}\'s in the word.\n'
                       f'The word looks like {" ".join(bars)}\n'
                       f'You have {life} wrong guesses left.\n')
 
+                # Voice output
                 speak_output(f'There is no "{input_ch}" in the word.'
                              f'You have {life} wrong guesses left.')
 
