@@ -26,18 +26,21 @@ while the output on console is only for adults to check what is going on.
 import speech_recognition as sr
 from gtts import gTTS
 import os
-from playsound import playsound
+from playsound import playsound  # Version: 1.2.2
+import time
 
 
 def speak_output(text):
     """
     This function speaks out loud the given content.
-    :param text: string, the content to be speak out loud by gTTS.
+    :param text: string, the content to be spoken out loud by gTTS.
     """
     tts = gTTS(text=text, lang="en", slow=True)
-    tts.save("output.mp3")
-    playsound("output.mp3")
+    filename = "output.mp3"
     os.remove("output.mp3")
+    tts.save(filename)
+    time.sleep(1)
+    playsound(filename)
 
 
 def get_voice_input():
