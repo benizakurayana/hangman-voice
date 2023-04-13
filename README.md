@@ -1,5 +1,3 @@
-# hangman-voice
-I designed a hangman game with voice recognition and speech-to-text input/output
 # Introduction
 This program is an extension version of the hangman problem in one of my coding assignments,
 which originally requires input and output on console and string manipulation only.
