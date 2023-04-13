@@ -85,7 +85,7 @@ def main():
     """
     # Game setup
     answer = input('Please set the answer: ').upper()
-    life = int(input('Please set number of guesses allowed: '))
+    life = int(input('Please set number of wrong guesses allowed: '))
     ans_len = len(answer)
     bars = []
     for i in range(ans_len):
